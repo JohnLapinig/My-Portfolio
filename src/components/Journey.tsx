@@ -30,6 +30,15 @@ const timeline = [
     type: 'work',
   },
   {
+    year: 'December 2025',
+    title: 'Alliance Jumpstart Training Program',
+    org: 'Alliance Software Inc.',
+    description:
+      'Completed an industry-partnered Software Development subject through Alliance\'s Jumpstart Training Program, working on a group project that followed real-world development practices. Recognized as one of three outstanding performers and received a Certificate of Merit. Also had the opportunity to speak at the program\'s culmination event, enhancing confidence in public speaking.',
+    icon: Award,
+    type: 'award',
+  },
+  {
     year: '2024',
     title: 'With Honors — Top 10',
     org: 'CpE Department Honors List',
@@ -41,7 +50,7 @@ const timeline = [
   {
     year: '2022',
     title: 'Started Computer Engineering',
-    org: 'University',
+    org: 'Cebu Institute of Technology - University',
     description:
       'Began the journey into computer engineering, building foundations in mathematics, physics, and programming.',
     icon: GraduationCap,
@@ -119,7 +128,7 @@ export default function Journey() {
                       </span>
                     </div>
                     <h3 className="text-lg font-semibold text-white mb-1">{item.title}</h3>
-                    <p className="text-sm text-cyan/50 mb-3">{item.org}</p>
+                    <p className="text-sm text-cyan/50 mb-3 italic">{item.org}</p>
                     <p className="text-sm text-slate-400 leading-relaxed">{item.description}</p>
                   </div>
                 </div>
