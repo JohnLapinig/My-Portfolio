@@ -5,36 +5,36 @@ const timeline = [
   {
     year: '2022 - 2026',
     title: 'Bachelor of Science in Computer Engineering',
-    org: 'University',
+    org: 'Cebu Institute of Technology - University',
     description:
       'Pursued a comprehensive curriculum covering digital systems, embedded computing, software engineering, and data structures.',
     icon: GraduationCap,
     type: 'education',
   },
   {
-    year: '2025',
+    year: '2025 - 2026',
     title: 'Capstone / Thesis Project',
-    org: 'University',
+    org: 'Para.Go: Cebu Smart Jeepney Automation and Monitoring System',
     description:
-      'Developed an innovative capstone project integrating hardware and software solutions to solve a real-world problem.',
+      'Collaborated on the development of an IoT-based smart jeepney automation and monitoring system integrating GPS-based real-time tracking, RFID passenger counting, cashless fare collection, and ambient control of fans and lighting. The project includes a mobile application for live location and route monitoring, improving commuter safety, efficiency, and transparency in Cebu City.',
     icon: Star,
     type: 'project',
   },
   {
-    year: '2024',
+    year: 'June - July 2025',
     title: 'Internship / OJT',
-    org: 'Company',
+    org: 'Arielus Software Inc.',
     description:
-      'Gained hands-on industry experience working on real engineering projects, collaborating with professional teams.',
+      'Served as a QA Tester intern during a one-month training period, gaining hands-on experience in manual and automated testing using tools such as Azure DevOps, Selenium, and Google Lighthouse while collaborating with professional teams.',
     icon: Briefcase,
     type: 'work',
   },
   {
-    year: '2023',
-    title: 'Dean\'s List Recognition',
-    org: 'University',
+    year: '2024',
+    title: 'With Honors — Top 10',
+    org: 'CpE Department Honors List',
     description:
-      'Achieved academic excellence and was recognized for outstanding performance in core engineering subjects.',
+      'Recognized on the CpE Department honors list during 3rd Year, 2nd Semester for outstanding academic performance — ranked among the Top 10 students.',
     icon: Award,
     type: 'award',
   },

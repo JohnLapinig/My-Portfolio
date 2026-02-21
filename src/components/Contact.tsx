@@ -47,14 +47,14 @@ export default function Contact() {
               {
                 icon: Mail,
                 label: 'Email',
-                value: 'lapinig@example.com',
+                value: 'john6lapinig@gmail.com',
                 href: 'mailto:lapinig@example.com',
               },
               {
                 icon: Phone,
                 label: 'Phone',
-                value: '+63 XXX XXX XXXX',
-                href: 'tel:+63XXXXXXXXXX',
+                value: '+63 949 947 0809',
+                href: 'tel:+639499470809',
               },
               {
                 icon: MapPin,
