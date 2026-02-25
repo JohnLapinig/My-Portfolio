@@ -47,6 +47,7 @@ export default function About() {
             <p className="text-slate-400 leading-[1.85] text-[0.935rem]">
               Throughout the internship, I slowly became more confident using tools like{' '}
               <span className="text-cyan italic font-medium">Azure DevOps</span>,{' '}
+              <span className="text-cyan italic font-medium">Test & Feedback</span>,{' '}
               <span className="text-cyan italic font-medium">Selenium</span> and{' '}
               <span className="text-cyan italic font-medium">Lighthouse</span>—tools I hadn't
               worked with before. The tasks challenged me to be more careful and patient,

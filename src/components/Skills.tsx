@@ -5,7 +5,7 @@ const skillCategories = [
   {
     title: 'QA & Testing',
     icon: PenTool,
-    skills: ['Azure DevOps', 'Selenium','Lighthouse', 'Manual Testing', 'Bug Tracking', 'Test Documentation'],
+    skills: ['Azure DevOps', 'Selenium','Lighthouse', 'Test & Feedback', 'Manual Testing', 'Bug Tracking', 'Test Documentation'],
   },
   {
     title: 'Frontend',

@@ -25,7 +25,7 @@ const timeline = [
     title: 'Internship / OJT',
     org: 'Arielus Software Inc.',
     description:
-      'Served as a QA Tester intern during a one-month training period, gaining hands-on experience in manual and automated testing using tools such as Azure DevOps, Selenium, and Google Lighthouse while collaborating with professional teams.',
+      'Served as a QA Tester intern during a one-month training period, gaining hands-on experience in manual and automated testing using tools such as Azure DevOps, Selenium, Test & Feedback and Google Lighthouse while collaborating with professional teams.',
     icon: Briefcase,
     type: 'work',
   },
