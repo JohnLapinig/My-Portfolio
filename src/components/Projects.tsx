@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { Github, ChevronDown, ChevronUp, Star, Cpu, Globe, DollarSign, Eye, Cloud, BookOpen, Layers } from 'lucide-react';
+import CircuitGrid from './CircuitGrid';
 
 interface Project {
   title: string;
@@ -39,7 +40,7 @@ const projects: Project[] = [
     title: 'WILDFind',
     label: 'Software Development 2 (2025)',
     description:
-      'A lost and found tracking system for school environments. Originally developed as a C# Windows Forms application, now migrated to a modern web-based platform using React and Firebase for improved accessibility and real-time updates.',
+      'A lost-and-found tracking web application that allows users to report lost or found items, browse and filter reported posts, match lost items with found ones, and manage claim statuses to streamline recovery and accountability.',
     tags: ['React', 'Firebase', 'JavaScript', 'HTML/CSS'],
     github: 'https://github.com/AspireSpartan/WILDFind_webapp',
     featured: true,
@@ -134,12 +135,44 @@ const projects: Project[] = [
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const [expanded, setExpanded] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -8;
+    const rotateY = ((x - centerX) / centerX) * 8;
+    el.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    // Dynamic shine
+    const shine = el.querySelector('.card-shine') as HTMLElement;
+    if (shine) {
+      shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(0,255,255,0.12) 0%, transparent 60%)`;
+    }
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    const shine = el.querySelector('.card-shine') as HTMLElement;
+    if (shine) shine.style.background = 'transparent';
+  }, []);
 
   return (
     <div
-      className="group relative flex flex-col rounded-2xl bg-dark-light/50 border border-slate-800 hover:border-cyan/30 transition-all duration-500 hover:shadow-xl hover:shadow-cyan/5 hover:-translate-y-1 overflow-hidden"
-      style={{ transitionDelay: `${index * 100}ms` }}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="group relative flex flex-col rounded-2xl glass-card border border-slate-800 hover:border-cyan/30 overflow-hidden will-change-transform"
+      style={{ transitionDelay: `${index * 100}ms`, transition: 'transform 0.15s ease-out, border-color 0.4s ease, box-shadow 0.4s ease' }}
     >
+      {/* Interactive shine overlay */}
+      <div className="card-shine absolute inset-0 pointer-events-none z-20 rounded-2xl" />
       {/* Gradient image placeholder */}
       <div className={`relative h-48 bg-linear-to-br ${project.gradient} overflow-hidden`}>
         {/* Grid pattern overlay */}
@@ -152,16 +185,16 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           }}
         />
 
-        {/* Centered icon */}
+        {/* Centered icon — enhanced with glow */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-16 h-16 rounded-2xl bg-dark/60 backdrop-blur-sm border border-cyan/20 flex items-center justify-center text-cyan group-hover:scale-110 transition-transform duration-500">
+          <div className="w-16 h-16 rounded-2xl glass border border-cyan/20 flex items-center justify-center text-cyan group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-cyan/20 transition-all duration-500">
             {project.icon}
           </div>
         </div>
 
-        {/* Featured badge */}
+        {/* Featured badge — glass style */}
         {project.featured && (
-          <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan/10 backdrop-blur-sm border border-cyan/30 text-cyan text-xs font-mono font-medium">
+          <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1 rounded-full glass border border-cyan/30 text-cyan text-xs font-mono font-medium shadow-lg shadow-cyan/10">
             <Star size={10} className="fill-cyan" />
             Featured
           </div>
@@ -190,7 +223,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
       {/* Content */}
       <div className="flex flex-col flex-1 p-5">
-        <h3 className="text-lg font-display font-semibold text-white mb-1 group-hover:text-cyan transition-colors leading-snug">
+        <h3 className="font-display text-lg font-semibold text-white mb-1 group-hover:text-cyan transition-colors leading-snug">
           {project.title}
         </h3>
         <p className="text-xs font-mono text-cyan/60 mb-3">{project.label}</p>
@@ -266,26 +299,29 @@ export default function Projects() {
     <section
       id="projects"
       ref={ref as React.RefObject<HTMLDivElement>}
-      className={`relative py-24 bg-dark ${isVisible ? 'section-visible' : 'section-hidden'}`}
+      className={`relative py-28 bg-dark overflow-hidden ${isVisible ? 'section-visible' : 'section-hidden'}`}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      {/* Subtle circuit background */}
+      <CircuitGrid />
+      
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* Section heading */}
-        <div className="text-center mb-16">
-          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-mono font-medium border border-cyan/20 text-cyan bg-cyan/5 mb-5">
+        <div className="text-center mb-16 reveal-item reveal-delay-1">
+          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-mono font-medium border border-cyan/20 text-cyan bg-cyan/5 mb-5 shadow-lg shadow-cyan/5">
             <Layers size={14} />
             My Work
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
-            <span className="cyan-glow">Featured Projects</span>
+            Featured <span className="cyan-glow">Projects</span>
           </h2>
-          <p className="mt-6 text-slate-400 max-w-2xl mx-auto">
+          <p className="mt-4 text-slate-400 max-w-2xl mx-auto text-sm">
             Showcasing practical applications of theory and design — from embedded IoT systems to
             full‑stack web applications.
           </p>
         </div>
 
         {/* Featured projects grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 stagger-grid">
           {featured.map((project, idx) => (
             <ProjectCard key={project.title} project={project} index={idx} />
           ))}
@@ -294,12 +330,12 @@ export default function Projects() {
         {/* Other projects */}
         {other.length > 0 && (
           <>
-            <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center gap-4 mb-8 reveal-item reveal-delay-3">
               <div className="h-px flex-1 bg-slate-800" />
               <span className="text-sm font-mono text-slate-500">Other Projects</span>
               <div className="h-px flex-1 bg-slate-800" />
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-grid">
               {other.map((project, idx) => (
                 <ProjectCard key={project.title} project={project} index={idx} />
               ))}

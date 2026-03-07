@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
@@ -13,11 +13,26 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const suppressRef = useRef(false);
+
+  const clearActive = () => {
+    suppressRef.current = true;
+    setActiveSection('');
+    // Suppress observer updates for 1.2s while scroll animation completes
+    setTimeout(() => { suppressRef.current = false; }, 1200);
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Listen for logo clicks from other components (e.g. Footer)
+  useEffect(() => {
+    const handleClear = () => clearActive();
+    window.addEventListener('clear-active-section', handleClear);
+    return () => window.removeEventListener('clear-active-section', handleClear);
   }, []);
 
   // Track which section is currently in view
@@ -31,8 +46,17 @@ export default function Header() {
 
       const observer = new IntersectionObserver(
         ([entry]) => {
+          if (suppressRef.current) return;
           if (entry.isIntersecting) {
             setActiveSection(id);
+          } else if (activeSection === id) {
+            const anyVisible = sectionIds.some((sid) => {
+              const secEl = document.getElementById(sid);
+              if (!secEl) return false;
+              const rect = secEl.getBoundingClientRect();
+              return rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.4;
+            });
+            if (!anyVisible) setActiveSection('');
           }
         },
         { rootMargin: '-40% 0px -55% 0px' }
@@ -47,19 +71,24 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? 'glass shadow-lg shadow-primary/5'
+          ? 'glass shadow-lg shadow-cyan/5 border-b border-cyan/10'
           : 'bg-transparent'
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo — enhanced glow */}
         <a
           href="#"
-          className="font-mono text-xl font-bold text-cyan tracking-tight"
+          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); clearActive(); }}
+          className="group font-mono text-xl font-black tracking-widest hover:scale-105 transition-transform duration-300"
         >
-          &lt;<span className="text-white">JAL.dev</span>/&gt;
+          <span className="text-cyan drop-shadow-[0_0_8px_rgba(0,255,255,0.4)] group-hover:drop-shadow-[0_0_12px_rgba(0,255,255,0.6)] transition-all">&lt;</span>
+          <span className="bg-linear-to-r from-cyan via-white to-cyan bg-clip-text text-transparent">JAL</span>
+          <span className="text-cyan/60">.</span>
+          <span className="bg-linear-to-r from-white to-cyan bg-clip-text text-transparent">dev</span>
+          <span className="text-cyan drop-shadow-[0_0_8px_rgba(0,255,255,0.4)] group-hover:drop-shadow-[0_0_12px_rgba(0,255,255,0.6)] transition-all">/&gt;</span>
         </a>
 
         {/* Desktop Nav */}
@@ -87,7 +116,7 @@ export default function Header() {
           <li>
             <a
               href="#contact"
-              className="ml-2 px-5 py-2 rounded-full bg-cyan text-dark text-sm font-semibold hover:shadow-lg hover:shadow-cyan/25 transition-all duration-300 hover:scale-105"
+              className="ml-2 px-5 py-2 rounded-full bg-cyan text-dark text-sm font-semibold hover:bg-cyan/90 hover:shadow-lg hover:shadow-cyan/25 transition-all duration-300"
             >
               Hire Me
             </a>

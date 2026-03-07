@@ -1,5 +1,6 @@
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { GraduationCap, Award, Briefcase, Star, Route } from 'lucide-react';
+import CircuitGrid from './CircuitGrid';
 
 const timeline = [
   {
@@ -58,11 +59,42 @@ const timeline = [
   },
 ];
 
-const typeColors: Record<string, string> = {
-  education: 'from-cyan to-cyan/70',
-  project: 'from-neon to-neon/70',
-  work: 'from-emerald-400 to-emerald-300',
-  award: 'from-amber-400 to-amber-300',
+const typeConfig: Record<string, { gradient: string; bg: string; border: string; dot: string; badge: string }> = {
+  education: {
+    gradient: 'from-cyan to-cyan/70',
+    bg: 'bg-cyan/10',
+    border: 'hover:border-cyan/25',
+    dot: 'bg-cyan shadow-cyan/50',
+    badge: 'bg-cyan/10 text-cyan border-cyan/20',
+  },
+  project: {
+    gradient: 'from-neon to-neon/70',
+    bg: 'bg-neon/10',
+    border: 'hover:border-neon/25',
+    dot: 'bg-neon shadow-neon/50',
+    badge: 'bg-neon/10 text-neon border-neon/20',
+  },
+  work: {
+    gradient: 'from-emerald-400 to-emerald-300',
+    bg: 'bg-emerald-400/10',
+    border: 'hover:border-emerald-400/25',
+    dot: 'bg-emerald-400 shadow-emerald-400/50',
+    badge: 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20',
+  },
+  award: {
+    gradient: 'from-amber-400 to-amber-300',
+    bg: 'bg-amber-400/10',
+    border: 'hover:border-amber-400/25',
+    dot: 'bg-amber-400 shadow-amber-400/50',
+    badge: 'bg-amber-400/10 text-amber-400 border-amber-400/20',
+  },
+};
+
+const typeLabels: Record<string, string> = {
+  education: 'Education',
+  project: 'Project',
+  work: 'Experience',
+  award: 'Achievement',
 };
 
 export default function Journey() {
@@ -72,11 +104,13 @@ export default function Journey() {
     <section
       id="journey"
       ref={ref as React.RefObject<HTMLDivElement>}
-      className={`relative py-24 bg-dark ${isVisible ? 'section-visible' : 'section-hidden'}`}
+      className={`relative py-24 bg-dark overflow-hidden ${isVisible ? 'section-visible' : 'section-hidden'}`}
     >
-      <div className="max-w-4xl mx-auto px-6">
+      {/* Subtle circuit background */}
+      <CircuitGrid />
+      <div className="relative z-10 max-w-5xl mx-auto px-6">
         {/* Section heading */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-20 reveal-item reveal-delay-1">
           <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-mono font-medium border border-cyan/20 text-cyan bg-cyan/5 mb-5">
             <Route size={14} />
             My Path
@@ -84,57 +118,80 @@ export default function Journey() {
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
             Education & <span className="cyan-glow">Experience</span>
           </h2>
+          <p className="mt-4 text-slate-400 max-w-xl mx-auto">
+            A timeline of milestones shaping my journey in Computer Engineering
+          </p>
         </div>
 
         {/* Timeline */}
-        <div className="relative">
+        <div className="relative timeline-stagger">
           {/* Vertical line */}
-          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-linear-to-b from-cyan/50 via-neon/30 to-transparent" />
+          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-linear-to-b from-cyan/30 via-cyan/15 to-transparent -translate-x-1/2" />
 
           {timeline.map((item, idx) => {
             const Icon = item.icon;
             const isLeft = idx % 2 === 0;
+            const config = typeConfig[item.type];
 
             return (
               <div
                 key={idx}
-                className={`relative flex items-start mb-12 ${
-                  isLeft ? 'md:flex-row' : 'md:flex-row-reverse'
+                className={`relative flex items-start mb-14 last:mb-0 ${
+                  isLeft ? 'md:flex-row-reverse' : 'md:flex-row'
                 }`}
                 style={{ transitionDelay: `${idx * 150}ms` }}
               >
                 {/* Connector dot */}
-                <div className="absolute left-8 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-linear-to-r border-4 border-dark z-10"
-                  style={{
-                    backgroundImage: `linear-gradient(to right, var(--tw-gradient-stops))`,
-                  }}
-                >
-                  <div className={`w-full h-full rounded-full bg-linear-to-r ${typeColors[item.type]}`} />
+                <div className="absolute left-8 md:left-1/2 -translate-x-1/2 z-10 flex items-center justify-center">
+                  <div className={`w-3.5 h-3.5 rounded-full ${config.dot} shadow-lg ring-4 ring-dark`} />
                 </div>
+
+                {/* Horizontal connector line (desktop) */}
+                <div className={`hidden md:block absolute top-1.5 h-px bg-cyan/15 ${
+                  isLeft ? 'right-[calc(50%+8px)] w-8' : 'left-[calc(50%+8px)] w-8'
+                }`} />
 
                 {/* Content card */}
                 <div
-                  className={`ml-16 md:ml-0 md:w-[calc(50%-2rem)] ${
-                    isLeft ? 'md:pr-8' : 'md:pl-8'
+                  className={`ml-16 md:ml-0 md:w-[calc(50%-2.5rem)] ${
+                    isLeft ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'
                   }`}
                 >
-                  <div className="group p-6 rounded-2xl bg-dark/60 border border-slate-800 hover:border-cyan/20 transition-all duration-300 hover:shadow-lg hover:shadow-cyan/5">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className={`w-10 h-10 flex items-center justify-center rounded-lg bg-linear-to-r ${typeColors[item.type]} bg-opacity-10`}>
-                        <Icon size={18} className="text-white" />
+                  <div className={`group relative p-6 rounded-2xl glass-card card-3d-hover border border-slate-800 ${config.border} transition-all duration-500 hover:shadow-lg hover:shadow-cyan/5 overflow-hidden`}>
+                    {/* Shimmer overlay */}
+                    <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/3 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+
+                    {/* Top accent line */}
+                    <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r ${config.gradient} opacity-0 group-hover:opacity-40 transition-opacity duration-500`} />
+
+                    {/* Header row */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className={`w-11 h-11 flex items-center justify-center rounded-xl bg-linear-to-br ${config.gradient} shadow-lg transition-transform duration-300 group-hover:scale-110 shrink-0`}>
+                        <Icon size={20} className="text-dark" />
                       </div>
-                      <span className="text-xs font-semibold text-cyan tracking-wider uppercase">
-                        {item.year}
-                      </span>
+                      <div>
+                        <span className={`inline-block text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border ${config.badge} mb-1`}>
+                          {typeLabels[item.type]}
+                        </span>
+                        <p className="text-xs font-semibold text-cyan/70 tracking-wide">
+                          {item.year}
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="text-lg font-semibold text-white mb-1">{item.title}</h3>
-                    <p className="text-sm text-cyan/50 mb-3 italic">{item.org}</p>
+
+                    <h3 className="text-lg font-bold text-white mb-1.5 group-hover:text-cyan/90 transition-colors duration-300">{item.title}</h3>
+                    <p className="text-sm text-cyan/40 mb-3 font-medium">{item.org}</p>
                     <p className="text-sm text-slate-400 leading-relaxed">{item.description}</p>
                   </div>
                 </div>
               </div>
             );
           })}
+
+          {/* Terminal node at the bottom */}
+          <div className="absolute left-8 md:left-1/2 -translate-x-1/2 bottom-0">
+            <div className="w-3 h-3 rounded-full bg-dark border-2 border-cyan/20" />
+          </div>
         </div>
       </div>
     </section>

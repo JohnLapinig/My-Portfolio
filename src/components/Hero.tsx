@@ -50,7 +50,9 @@ function TypewriterText() {
 
 function CodeWindow() {
   return (
-    <div className="code-window w-full max-w-md shadow-2xl shadow-cyan/5">
+    <div className="code-window w-full max-w-md tilt-card card-3d-hover">
+      {/* Shine overlay */}
+      <div className="tilt-shine" />
       {/* Window header */}
       <div className="code-window-header">
         <div className="flex gap-2">
@@ -103,84 +105,106 @@ function CodeWindow() {
   );
 }
 
-export default function Hero() {
+export default function Hero({ loaded }: { loaded?: boolean }) {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-dark">
       {/* Interactive particle network background */}
       <ParticleNetwork />
+      
+      {/* Perspective grid floor */}
+      <div className="perspective-grid" />
+      
+      {/* Ambient glow — enhanced */}
+      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-cyan/5 rounded-full blur-[100px]" />
+      <div className="absolute bottom-1/4 -right-20 w-64 h-64 bg-cyan/4 rounded-full blur-[80px]" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-20 w-full">
+      <div className={`relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-20 w-full ${loaded ? 'hero-entrance' : ''}`}>
         <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
           {/* Left: Text Content */}
           <div className="flex-1 lg:pt-8">
             {/* Open to work badge */}
-            <div className="animate-fade-in-down">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase border border-neon/30 text-neon bg-neon/5 mb-8">
+            <div className="hero-item hero-delay-1">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase border border-neon/30 text-neon bg-neon/5 mb-8 animate-pulse-glow" style={{ animationDuration: '4s' }}>
                 <span className="w-2 h-2 rounded-full bg-neon animate-pulse" />
-                Open to Work
+                Open to Opportunities
               </span>
             </div>
 
-            {/* Main Heading */}
-            <h1 className="animate-fade-in-up font-display text-4xl sm:text-5xl lg:text-[4.2rem] font-bold text-white leading-[1.1] tracking-tight">
-              Building
+            {/* Main Heading — Enhanced 3D text */}
+            <h1 className="hero-item hero-delay-2 font-display text-4xl sm:text-5xl lg:text-[4.5rem] font-bold text-white leading-[1.08] tracking-tight">
+              My
               <br />
-              <span className="cyan-glow">Digital</span>
+              <span className="cyan-glow relative inline-block">
+                Digital
+                <span className="absolute -inset-1 bg-cyan/5 blur-2xl rounded-full -z-10" />
+              </span>
               <br />
-              Architecture
+              <span className="relative">
+                Portfolio
+                <span className="absolute -bottom-2 left-0 w-full h-1 bg-linear-to-r from-cyan via-cyan/60 to-transparent rounded-full" style={{ animation: 'glow-line 3s ease-in-out infinite' }} />
+              </span>
             </h1>
 
             {/* Typewriter */}
-            <div className="animate-fade-in-up animation-delay-200 mt-6">
+            <div className="hero-item hero-delay-3 mt-6">
               <TypewriterText />
             </div>
 
             {/* Description */}
-            <p className="animate-fade-in-up animation-delay-400 mt-6 text-base text-slate-300 max-w-lg leading-relaxed">
+            <p className="hero-item hero-delay-4 mt-6 text-base text-slate-300 max-w-lg leading-relaxed">
               Computer Engineering student passionate about front-end web
               development, UI/UX design, embedded systems, and
               scalable software solutions.
             </p>
 
-            {/* CTA buttons */}
-            <div className="animate-fade-in-up animation-delay-600 mt-10 flex flex-wrap gap-4">
+            {/* CTA buttons — neon style */}
+            <div className="hero-item hero-delay-5 mt-10 flex flex-wrap gap-4">
               <a
                 href="#projects"
-                className="group px-7 py-3 rounded-full bg-cyan text-dark font-semibold hover:shadow-xl hover:shadow-cyan/20 transition-all duration-300 hover:scale-105 flex items-center gap-2"
+                className="neon-btn group px-7 py-3 rounded-full bg-cyan text-dark font-semibold hover:shadow-lg hover:shadow-cyan/15 hover:scale-105 transition-all duration-300 flex items-center gap-2"
               >
                 View Projects
                 <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
               </a>
               <a
                 href="#contact"
-                className="px-7 py-3 rounded-full border border-slate-700 text-slate-300 font-semibold hover:border-cyan hover:text-cyan transition-all duration-300 hover:scale-105"
+                className="neon-btn px-7 py-3 rounded-full border border-slate-700 text-slate-300 font-medium hover:border-cyan/50 hover:text-cyan hover:scale-105 transition-all duration-300"
               >
                 Contact Me
               </a>
             </div>
 
-            {/* Social links */}
-            <div className="animate-fade-in-up animation-delay-800 mt-10 flex gap-4">
+            {/* Social links — magnetic hover */}
+            <div className="hero-item hero-delay-6 mt-10 flex gap-4">
               {[
                 { icon: Github, href: 'https://github.com/JohnLapinig', label: 'GitHub' },
                 { icon: Linkedin, href: '#', label: 'LinkedIn' },
-                { icon: Mail, href: 'mailto:lapinig@example.com', label: 'Email' },
-                { icon: FileText, href: '#', label: 'Resume' },
+                { icon: Mail, href: 'mailto:john6lapinig@gmail.com', label: 'Email' },
               ].map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-10 h-10 flex items-center justify-center rounded-full border border-slate-800 text-slate-500 hover:border-cyan hover:text-cyan hover:bg-cyan/5 transition-all duration-300 hover:scale-110"
+                  className="magnetic-hover w-11 h-11 flex items-center justify-center rounded-full border border-slate-800 text-slate-500 hover:border-cyan hover:text-cyan hover:bg-cyan/8 hover:shadow-lg hover:shadow-cyan/20 transition-all duration-300"
                 >
-                  <Icon size={16} />
+                  <Icon size={17} />
                 </a>
               ))}
+              {/* Resume — separate link to open PDF directly */}
+              <a
+                href={`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}RESUME-LAPINIG.pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Resume"
+                className="magnetic-hover w-11 h-11 flex items-center justify-center rounded-full border border-slate-800 text-slate-500 hover:border-cyan hover:text-cyan hover:bg-cyan/8 hover:shadow-lg hover:shadow-cyan/20 transition-all duration-300"
+              >
+                <FileText size={17} />
+              </a>
             </div>
           </div>
 
-          {/* Right: Profile picture + Code window */}
-          <div className="shrink-0 flex flex-col items-center gap-6 animate-fade-in-right animation-delay-400">
+          {/* Right: Profile picture + Code window — 3D enhanced */}
+          <div className="shrink-0 flex flex-col items-center gap-8 hero-item hero-delay-4 perspective-container">
             {/* Profile picture */}
             <div className="relative animate-float" style={{ animationDuration: '6s' }}>
               <div className="w-40 h-40 sm:w-44 sm:h-44 rounded-full p-0.75 bg-linear-to-br from-cyan to-cyan/40 shadow-lg shadow-cyan/20">
@@ -191,14 +215,16 @@ export default function Hero() {
                 />
               </div>
               {/* Label */}
-              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-dark border border-cyan/30 text-xs font-mono text-cyan whitespace-nowrap">
-                Future Software Engineer
+              <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 px-5 py-2 rounded-full glass border border-cyan/20 whitespace-nowrap shadow-xl shadow-cyan/10 overflow-hidden group/label">
+                <div className="absolute inset-0 bg-linear-to-r from-cyan/5 via-transparent to-cyan/5" />
+                <span className="relative font-mono text-[11px] font-semibold tracking-wider uppercase bg-linear-to-r from-cyan via-white to-cyan bg-clip-text text-transparent">
+                  Future Software Engineer / Developer
+                </span>
               </div>
-              {/* Glow */}
-              <div className="absolute inset-0 rounded-full bg-cyan/10 blur-2xl -z-10" />
+              <div className="absolute inset-0 rounded-full bg-cyan/10 blur-2xl -z-10 animate-pulse-slow" />
             </div>
 
-            {/* Code window */}
+            {/* Code window — enhanced */}
             <CodeWindow />
           </div>
         </div>

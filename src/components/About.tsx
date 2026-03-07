@@ -1,5 +1,23 @@
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { useCountUp } from '../hooks/useCountUp';
 import { User, Quote } from 'lucide-react';
+import CircuitGrid from './CircuitGrid';
+
+function AnimatedStat({ value, suffix, label, delay }: { value: number; suffix: string; label: string; delay: number }) {
+  const { count, ref } = useCountUp(value, 1800);
+  return (
+    <div
+      ref={ref as React.RefObject<HTMLDivElement>}
+      className="stat-card text-center p-6 rounded-xl glass-card border border-slate-800 hover:border-cyan/30 group reveal-scale"
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <div className="text-3xl font-bold cyan-glow transition-transform duration-300">
+        <span className="counter-value">{count}</span>{suffix}
+      </div>
+      <div className="text-sm text-cyan/70 font-medium mt-2">{label}</div>
+    </div>
+  );
+}
 
 export default function About() {
   const { ref, isVisible } = useScrollAnimation();
@@ -8,25 +26,29 @@ export default function About() {
     <section
       id="about"
       ref={ref as React.RefObject<HTMLDivElement>}
-      className={`relative py-24 bg-dark ${isVisible ? 'section-visible' : 'section-hidden'}`}
+      className={`relative py-28 bg-dark overflow-hidden ${isVisible ? 'section-visible' : 'section-hidden'}`}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      {/* Subtle circuit background */}
+      <CircuitGrid />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* Section heading */}
-        <div className="text-center mb-16">
-          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-mono font-medium border border-cyan/20 text-cyan bg-cyan/5 mb-5">
+        <div className="text-center mb-16 reveal-item reveal-delay-1">
+          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-mono font-medium border border-cyan/20 text-cyan bg-cyan/5 mb-5 shadow-lg shadow-cyan/5">
             <User size={14} />
             About Me
           </span>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
-            <span className="cyan-glow">Who Am I?</span>
+            Who <span className="cyan-glow">Am I?</span>
           </h2>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-14 items-start">
-          {/* Left side — narrative text */}
-          <div className="space-y-5">
-            {/* Opening paragraph — hero statement */}
+          {/* Left side — narrative text with enhanced styling */}
+          <div className="space-y-5 reveal-left reveal-delay-2">
+            {/* Opening paragraph — hero statement with glass effect */}
             <div className="relative pl-5 border-l-2 border-cyan/40">
+              <div className="absolute -left-px top-0 w-0.5 h-full bg-linear-to-b from-cyan via-cyan/40 to-transparent" />
               <p className="text-slate-200 text-lg leading-relaxed font-light">
                 Hi! I'm <span className="text-white font-semibold">John Augustine L. Lapinig,</span> and as a{' '}
                 <span className="text-white font-semibold">BSCpE student</span> currently
@@ -62,30 +84,22 @@ export default function About() {
             </p>
           </div>
 
-          {/* Right side — stats + quote */}
-          <div className="space-y-6">
-            {/* Stats grid */}
+          {/* Right side — stats + quote with 3D effects */}
+          <div className="space-y-6 reveal-right reveal-delay-3">
+            {/* Stats grid with animated counters */}
             <div className="grid grid-cols-2 gap-4">
-              {[
-                { value: '5+', label: 'Projects Completed' },
-                { value: '240', label: 'Hours OJT' },
-                { value: '6+', label: 'Technologies' },
-                { value: '4+', label: 'Academic Honors' },
-              ].map((stat) => (
-                <div
-                  key={stat.label}
-                  className="text-center p-6 rounded-xl bg-dark-light/30 border border-slate-800 hover:border-cyan/20 transition-all duration-300"
-                >
-                  <div className="text-3xl font-bold cyan-glow font-display">{stat.value}</div>
-                  <div className="text-sm text-cyan/70 mt-2">{stat.label}</div>
-                </div>
-              ))}
+              <AnimatedStat value={5} suffix="+" label="Projects Completed" delay={200} />
+              <AnimatedStat value={240} suffix="" label="Hours OJT" delay={300} />
+              <AnimatedStat value={6} suffix="+" label="Technologies" delay={400} />
+              <AnimatedStat value={4} suffix="+" label="Academic Honors" delay={500} />
             </div>
 
             {/* Quote card */}
-            <div className="p-6 rounded-2xl bg-linear-to-br from-cyan/5 to-transparent border border-cyan/20">
-              <Quote size={28} className="text-cyan/40 mb-4" />
-              <p className="text-slate-300 italic leading-relaxed">
+            <div className="relative p-6 rounded-2xl glass-card border border-cyan/15 overflow-hidden reveal-item reveal-delay-5">
+              {/* Shimmer overlay */}
+              <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/3 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              <Quote size={24} className="text-cyan/30 mb-3" />
+              <p className="text-slate-300 italic leading-relaxed text-sm">
                 "It didn't just teach me how to test software—it gave me a better
                 sense of what it means to be part of a team, to handle responsibility,
                 and to keep learning along the way."

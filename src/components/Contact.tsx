@@ -1,6 +1,11 @@
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import { Mail, MapPin, Phone, Send, MessageSquare } from 'lucide-react';
+import { Mail, MapPin, Phone, Send, MessageSquare, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
+import CircuitGrid from './CircuitGrid';
+
+// ── Web3Forms access key ──
+// Get yours FREE at https://web3forms.com — enter your Gmail and paste the key below.
+const WEB3FORMS_KEY = 'fd13f069-961d-4ce2-9467-e62bffc9a6b9';
 
 export default function Contact() {
   const { ref, isVisible } = useScrollAnimation();
@@ -10,23 +15,63 @@ export default function Contact() {
     subject: '',
     message: '',
   });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // Handle form submission — integrate with email service later
-    const mailtoLink = `mailto:lapinig@example.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`From: ${formData.name} (${formData.email})\n\n${formData.message}`)}`;
-    window.open(mailtoLink);
+    setStatus('sending');
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject ? `${formData.subject} — from ${formData.name}` : `New Portfolio Inquiry from ${formData.name}`,
+          message: formData.message,
+          from_name: 'Portfolio Contact Form',
+          // Custom email template for professional appearance
+          replyto: formData.email,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus('success');
+        setStatusMessage("Message sent successfully! I'll get back to you soon.");
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setStatus('error');
+        setStatusMessage('Failed to send message. Please try again or email me directly.');
+      }
+    } catch {
+      setStatus('error');
+      setStatusMessage('Network error. Please check your connection and try again.');
+    }
+
+    // Reset status after 5 seconds
+    setTimeout(() => {
+      setStatus('idle');
+      setStatusMessage('');
+    }, 5000);
   };
 
   return (
     <section
       id="contact"
       ref={ref as React.RefObject<HTMLDivElement>}
-      className={`relative py-24 bg-dark ${isVisible ? 'section-visible' : 'section-hidden'}`}
+      className={`relative py-24 bg-dark overflow-hidden ${isVisible ? 'section-visible' : 'section-hidden'}`}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      {/* Subtle circuit background */}
+      <CircuitGrid />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* Section heading */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 reveal-item reveal-delay-1">
           <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-mono font-medium border border-cyan/20 text-cyan bg-cyan/5 mb-5">
             <MessageSquare size={14} />
             Get In Touch
@@ -42,13 +87,13 @@ export default function Contact() {
 
         <div className="grid lg:grid-cols-5 gap-12">
           {/* Contact info */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6 reveal-left reveal-delay-2">
             {[
               {
                 icon: Mail,
                 label: 'Email',
                 value: 'john6lapinig@gmail.com',
-                href: 'mailto:lapinig@example.com',
+                href: 'mailto:john6lapinig@gmail.com',
               },
               {
                 icon: Phone,
@@ -59,16 +104,16 @@ export default function Contact() {
               {
                 icon: MapPin,
                 label: 'Location',
-                value: 'Philippines',
+                value: 'Ubca 3, Quiot Cebu City',
                 href: '#',
               },
             ].map(({ icon: Icon, label, value, href }) => (
               <a
                 key={label}
                 href={href}
-                className="group flex items-start gap-4 p-5 rounded-2xl bg-dark-light/50 border border-slate-800 hover:border-cyan/20 transition-all duration-300"
+                className="group flex items-start gap-4 p-5 rounded-2xl glass-card border border-slate-800 hover:border-cyan/25 card-3d-hover"
               >
-                <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-cyan/10 text-cyan group-hover:bg-cyan/15 transition-colors shrink-0">
+                <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-cyan/10 text-cyan group-hover:bg-cyan/15 group-hover:shadow-lg group-hover:shadow-cyan/15 transition-all duration-300 shrink-0">
                   <Icon size={20} />
                 </div>
                 <div>
@@ -82,7 +127,7 @@ export default function Contact() {
           {/* Contact form */}
           <form
             onSubmit={handleSubmit}
-            className="lg:col-span-3 space-y-5"
+            className="lg:col-span-3 space-y-5 reveal-right reveal-delay-3"
           >
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
@@ -132,11 +177,33 @@ export default function Contact() {
             </div>
             <button
               type="submit"
-              className="group w-full sm:w-auto px-8 py-3.5 rounded-full bg-cyan text-dark font-semibold hover:shadow-xl hover:shadow-cyan/25 transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+              disabled={status === 'sending'}
+              className="neon-btn group w-full sm:w-auto px-8 py-3.5 rounded-full bg-cyan text-dark font-semibold hover:shadow-lg hover:shadow-cyan/15 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              Send Message
-              <Send size={16} className="transition-transform group-hover:translate-x-1" />
+              {status === 'sending' ? (
+                <>
+                  <Loader size={16} className="animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  Send Message
+                  <Send size={16} className="transition-transform group-hover:translate-x-1" />
+                </>
+              )}
             </button>
+
+            {/* Status feedback */}
+            {statusMessage && (
+              <div className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium ${
+                status === 'success'
+                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                  : 'bg-red-500/10 text-red-400 border border-red-500/20'
+              }`}>
+                {status === 'success' ? <CheckCircle size={16} /> : <AlertCircle size={16} />}
+                {statusMessage}
+              </div>
+            )}
           </form>
         </div>
       </div>
