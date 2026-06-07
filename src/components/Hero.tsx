@@ -5,7 +5,7 @@ import ParticleNetwork from './ParticleNetwork';
 
 function TypewriterText() {
   const phrases = [
-    'Graduating Computer Engineering Student',
+    'Computer Engineering Graduate',
     'Aspiring Front-End Developer',
     'Embedded Systems Engineer',
     'UI/UX Enthusiast',
