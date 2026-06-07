@@ -76,9 +76,8 @@ export default function About() {
             </p>
 
             <p className="text-slate-400 leading-[1.85] text-[0.935rem]">
-              Now that I am finishing my degree, I feel more prepared and focused. This
-              OJT gave me direction and helped me realize what kind of work I enjoy and
-              what areas I want to explore more after graduation.
+              Looking back now that I have graduated, I can say that my OJT played an important role in shaping my understanding of the industry. 
+              It gave me direction and helped me realize what kind of work I enjoy and which areas I would like to pursue further in my career.
             </p>
           </div>
 
