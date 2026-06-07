@@ -80,7 +80,7 @@ function CodeWindow() {
         <div className="ml-8">
           <span className="text-cyan">string</span>{' '}
           <span className="text-white">role = </span>
-          <span className="text-neon">"CpE Student"</span>;
+          <span className="text-neon">"CpE Graduate"</span>;
         </div>
         <div className="mt-3 ml-8">
           <span className="text-cyan">void</span>{' '}
