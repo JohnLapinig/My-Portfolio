@@ -152,7 +152,7 @@ export default function Hero({ loaded }: { loaded?: boolean }) {
 
             {/* Description */}
             <p className="hero-item hero-delay-4 mt-6 text-base text-slate-300 max-w-lg leading-relaxed">
-              Computer Engineering student passionate about front-end web
+              Computer Engineering graduate passionate about front-end web
               development, UI/UX design, embedded systems, and
               scalable software solutions.
             </p>

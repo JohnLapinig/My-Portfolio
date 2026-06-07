@@ -50,11 +50,9 @@ export default function About() {
             <div className="relative pl-5 border-l-2 border-cyan/40">
               <div className="absolute -left-px top-0 w-0.5 h-full bg-linear-to-b from-cyan via-cyan/40 to-transparent" />
               <p className="text-slate-200 text-lg leading-relaxed font-light">
-                Hi! I'm <span className="text-white font-semibold">John Augustine L. Lapinig,</span> and as a{' '}
-                <span className="text-white font-semibold">BSCpE student</span> currently
-                finishing my degree, my OJT at{' '}
-                <span className="text-cyan font-semibold">Arielus Software Inc.</span> gave me a
-                better understanding of how things work in a real tech environment.
+                Hi! I'm <span className="text-white font-semibold">John Augustine L. Lapinig,</span> a{' '}
+                <span className="text-white font-semibold">BS Computer Engineering graduate.</span> During my OJT at{' '}
+                <span className="text-cyan font-semibold">Arielus Software Inc.</span> I gained a better understanding of how things work in a real tech environment.
               </p>
             </div>
 
