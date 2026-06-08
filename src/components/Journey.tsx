@@ -17,7 +17,7 @@ const timeline = [
     title: 'Capstone / Thesis Project',
     org: 'Para.Go: Cebu Smart Jeepney Automation and Monitoring System',
     description:
-      'Collaborated on the development of an IoT-based smart jeepney automation and monitoring system integrating GPS-based real-time tracking, RFID passenger counting, cashless fare collection, and ambient control of fans and lighting. The project includes a mobile application for live location and route monitoring, improving commuter safety, efficiency, and transparency in Cebu City.',
+      'Collaborated on the development of an IoT-based smart jeepney system featuring GPS real-time tracking, RFID passenger counting, cashless fare collection, and automated fan and lighting control. Includes a mobile app for live location and route monitoring to improve commuter safety and efficiency in Cebu City. Presented at Cebu City Hall to Nestor D. Archival Sr. and city government officials on March 11, 2026.',
     icon: Star,
     type: 'project',
   },

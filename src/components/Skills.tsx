@@ -21,7 +21,7 @@ const skillCategories = [
   {
     title: 'Embedded Systems',
     icon: Cpu,
-    skills: ['AWS IoT Core', 'ESP32', 'Arduino', 'MQTT', 'PlatformIO', 'Sensors'],
+    skills: ['AWS (IoT Core, Lambda)', 'ESP32', 'Arduino', 'PlatformIO', 'Sensors', 'Soldering', 'Circuit Assembly', 'Prototyping', 'Ethernet Cable Termination'],
   },
   {
     title: 'Tools & Platforms',

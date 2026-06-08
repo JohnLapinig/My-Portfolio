@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import { Github, ChevronDown, ChevronUp, Star, Cpu, Globe, DollarSign, Eye, Cloud, BookOpen, Layers } from 'lucide-react';
+import { Github, ChevronDown, ChevronUp, Star, Cpu, Globe, DollarSign, Eye, Cloud, BookOpen, Layers, BusFront } from 'lucide-react';
 import CircuitGrid from './CircuitGrid';
 
 interface Project {
@@ -8,7 +8,8 @@ interface Project {
   label: string;
   description: string;
   tags: string[];
-  github: string;
+  github?: string;
+  repositories?: { label: string; url: string }[];
   featured: boolean;
   type: 'solo' | 'group';
   highlights: string[];
@@ -73,6 +74,29 @@ const projects: Project[] = [
     ],
     gradient: 'from-rose-500/20 via-pink-500/10 to-transparent',
     icon: <BookOpen size={22} />,
+  },
+  {
+    title: 'Para.Go — Cebu Smart Jeepney System',
+    label: 'Thesis / Capstone (2025 - 2026)',
+    description:
+      'Cebu Smart Jeepney Automation and Monitoring System – Collaborated on an automated system with GPS tracking, RFID passenger counting, cashless fares, and ambient fan/lighting control, featuring a mobile app for real-time monitoring to enhance commuter safety and efficiency in Cebu City. Presented the project to Cebu City Mayor Nestor D. Archival Sr. and city government officials at Cebu City Hall on March 11, 2026.',
+    tags: ['HTML/CSS', 'TypeScript', 'React Native', 'Firebase', 'AWS Lambda', 'Expo', 'Xendit'],
+    repositories: [
+      { label: 'Passenger', url: 'https://github.com/SirLKFD/Para.Go-Passenger' },
+      { label: 'Driver', url: 'https://github.com/SirLKFD/Para.Go-Driver' },
+      { label: 'IoT', url: 'https://github.com/SirLKFD/Para.Go-IOT' },
+    ],
+    featured: true,
+    type: 'group',
+    highlights: [
+      'Passenger mobile app',
+      'Driver mobile app',
+      'ESP32 IoT modules for real-time tracking & passenger counting',
+      'Cashless fare integration and admin dashboard',
+      'Presented at Cebu City Hall to Mayor and officials',
+    ],
+    gradient: 'from-cyan-500/20 via-blue-500/10 to-transparent',
+    icon: <BusFront size={22} />,
   },
   // ── Other Projects ──
   {
@@ -205,18 +229,35 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           {project.type === 'solo' ? '◆ Solo' : '◆◆ Group'}
         </div>
 
-        {/* Hover overlay with GitHub link */}
+        {/* Hover overlay with GitHub links */}
         <div className="absolute inset-0 bg-dark/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-          {project.github !== '#' && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-11 h-11 rounded-full bg-cyan/20 border border-cyan/40 flex items-center justify-center text-cyan hover:bg-cyan/30 transition-colors"
-              aria-label="View Code"
-            >
-              <Github size={18} />
-            </a>
+          {project.repositories ? (
+            project.repositories.map((repo, i) => (
+              <a
+                key={i}
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={repo.label}
+                aria-label={`View ${repo.label} Code`}
+                className="w-12 h-12 rounded-full bg-cyan/20 border border-cyan/40 flex flex-col items-center justify-center text-cyan hover:bg-cyan/30 transition-colors"
+              >
+                <Github size={16} />
+                <span className="text-[9px] mt-0.5 font-mono opacity-80">{repo.label}</span>
+              </a>
+            ))
+          ) : (
+            project.github && project.github !== '#' && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full bg-cyan/20 border border-cyan/40 flex items-center justify-center text-cyan hover:bg-cyan/30 transition-colors"
+                aria-label="View Code"
+              >
+                <Github size={18} />
+              </a>
+            )
           )}
         </div>
       </div>
@@ -243,18 +284,34 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           ))}
         </div>
 
-        {/* Action row */}
-        <div className="flex items-center gap-3 mt-auto pt-2 border-t border-slate-800/50">
-          {project.github !== '#' && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan/10 text-cyan text-xs font-mono font-medium border border-cyan/20 hover:bg-cyan/20 hover:border-cyan/40 transition-all"
-            >
-              <Github size={14} />
-              Code
-            </a>
+        {/* Action row flex wrap to accommodate multiple buttons */}
+        <div className="flex flex-wrap items-center gap-3 mt-auto pt-2 border-t border-slate-800/50">
+          {project.repositories ? (
+            project.repositories.map((repo, i) => (
+              <a
+                key={i}
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan/10 text-cyan text-xs font-mono font-medium border border-cyan/20 hover:bg-cyan/20 hover:border-cyan/40 transition-all"
+                title={repo.label}
+              >
+                <Github size={14} />
+                {repo.label}
+              </a>
+            ))
+          ) : (
+            project.github && project.github !== '#' && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan/10 text-cyan text-xs font-mono font-medium border border-cyan/20 hover:bg-cyan/20 hover:border-cyan/40 transition-all"
+              >
+                <Github size={14} />
+                Code
+              </a>
+            )
           )}
           <button
             onClick={() => setExpanded(!expanded)}
