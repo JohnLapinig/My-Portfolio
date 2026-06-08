@@ -97,6 +97,11 @@ body {
   50% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.5), 0 0 80px rgba(0, 255, 255, 0.15); }
 }
 
+@keyframes text-pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(0, 255, 255, 0.3)); }
+  50% { filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.8)); }
+}
+
 @keyframes gradient-shift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -258,6 +263,10 @@ body {
 
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-text-pulse-glow {
+  animation: text-pulse-glow 3s ease-in-out infinite;
 }
 
 .animate-gradient {

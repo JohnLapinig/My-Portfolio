@@ -78,17 +78,17 @@ export default function Header() {
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo — enhanced glow */}
+        {/* Logo â€” original shape with text-specific pulse */}
         <a
           href="#"
           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); clearActive(); }}
-          className="group font-mono text-xl font-black tracking-widest hover:scale-105 transition-transform duration-300"
+          className="group font-mono text-xl font-black tracking-widest hover:scale-105 transition-all duration-300 animate-text-pulse-glow" style={{ animationDuration: '4s' }}
         >
-          <span className="text-cyan drop-shadow-[0_0_8px_rgba(0,255,255,0.4)] group-hover:drop-shadow-[0_0_12px_rgba(0,255,255,0.6)] transition-all">&lt;</span>
+          <span className="text-cyan group-hover:drop-shadow-[0_0_12px_rgba(0,255,255,0.6)] transition-all">&lt;</span>
           <span className="bg-linear-to-r from-cyan via-white to-cyan bg-clip-text text-transparent">JAL</span>
           <span className="text-cyan/60">.</span>
           <span className="bg-linear-to-r from-white to-cyan bg-clip-text text-transparent">dev</span>
-          <span className="text-cyan drop-shadow-[0_0_8px_rgba(0,255,255,0.4)] group-hover:drop-shadow-[0_0_12px_rgba(0,255,255,0.6)] transition-all">/&gt;</span>
+          <span className="text-cyan group-hover:drop-shadow-[0_0_12px_rgba(0,255,255,0.6)] transition-all">/&gt;</span>
         </a>
 
         {/* Desktop Nav */}

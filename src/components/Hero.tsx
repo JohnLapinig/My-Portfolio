@@ -215,11 +215,8 @@ export default function Hero({ loaded }: { loaded?: boolean }) {
                 />
               </div>
               {/* Label */}
-              <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 px-5 py-2 rounded-full glass border border-cyan/20 whitespace-nowrap shadow-xl shadow-cyan/10 overflow-hidden group/label">
-                <div className="absolute inset-0 bg-linear-to-r from-cyan/5 via-transparent to-cyan/5" />
-                <span className="relative font-mono text-[11px] font-semibold tracking-wider uppercase bg-linear-to-r from-cyan via-white to-cyan bg-clip-text text-transparent">
-                  Future Software Engineer / Developer
-                </span>
+              <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 inline-flex items-center px-5 py-1.5 rounded-full text-[11px] font-mono font-semibold tracking-wider uppercase border border-cyan/30 text-cyan bg-dark/80 backdrop-blur-md whitespace-nowrap shadow-xl shadow-cyan/10 animate-pulse-glow" style={{ animationDuration: '4s' }}>
+                Computer Engineer
               </div>
               <div className="absolute inset-0 rounded-full bg-cyan/10 blur-2xl -z-10 animate-pulse-slow" />
             </div>
